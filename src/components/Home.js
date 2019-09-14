@@ -1,9 +1,14 @@
-import React from 'react';
+import React from "react";
+import Header from "./Header";
+import ChangeLog from "./ChangeLog";
 
 function Home() {
-    return (
-        <div>
-            <h2>Home</h2>            
-        </div>
-    )
+  return (
+    <div>
+      <Header />
+      <ChangeLog />
+    </div>
+  );
 }
+
+export default Home;
