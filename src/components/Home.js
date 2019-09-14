@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { withCookies } from "react-cookie";
 import Header from "./Header";
 import ChangeLog from "./ChangeLog";
 import ModalChangeLog from "./ModalChangeLog";
@@ -7,7 +8,7 @@ import Modal from "react-modal";
 
 Modal.setAppElement(document.getElementById("root"));
 
-function Home() {
+function Home({ cookies }) {
   // Notifications Modal styles
   const modalStyles = {
     content: {
@@ -50,6 +51,10 @@ function Home() {
     fetchChanges();
   }, []);
 
+  function openModal() {
+    setModalOpen(true)
+  }
+
   function closeModal() {
     setModalOpen(false);
   }
@@ -60,7 +65,7 @@ function Home() {
 
   return (
     <div className="home">
-      <Header setModalOpen={setModalOpen} />
+      <Header openModal={openModal} />
       <Modal
         isOpen={modalOpen}
         onRequestClose={closeModal}
@@ -88,4 +93,4 @@ function ModalContents({ changes }) {
   );
 }
 
-export default Home;
+export default withCookies(Home);

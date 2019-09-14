@@ -1,11 +1,11 @@
 import React from "react";
 import Profile from "./Profile";
 
-function Header({ setModalOpen }) {
+function Header({ openModal }) {
   return (
     <header className="header">
       <h1>Paperspace changelog</h1>
-      <Profile setModalOpen={setModalOpen}/>
+      <Profile openModal={openModal}/>
     </header>
   );
 }

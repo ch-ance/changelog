@@ -2,13 +2,13 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
-function Profile({ setModalOpen }) {
+function Profile({ openModal }) {
   return (
     <div
       className="profile-icon"
       onClick={e => {
         e.preventDefault();
-        setModalOpen(true);
+        openModal();
       }}
     >
       <FontAwesomeIcon icon={faUserCircle} />
