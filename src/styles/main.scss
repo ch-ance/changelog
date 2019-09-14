@@ -5,8 +5,17 @@
     // width: 100vw;
     position: fixed;
     top: 0;
+    left: 25%;
     height: 6rem;
+    display: flex;
+    width: 50%;
+    background: white;
+    justify-content: space-between;
     border-bottom: 1px solid slategray;
+
+    .profile-icon {
+      font-size: 2.6rem;
+    }
 
     h1 {
       font-size: 2.6rem;
