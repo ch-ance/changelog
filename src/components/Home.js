@@ -14,7 +14,7 @@ function Home() {
         );
         console.log("RESULT: ", data);
         
-        // Splits data at each '\n## ' (a new change/update), and then adds the '## ' back
+        // Splits data at each new change and adds the correct MD formatting back in. Also removes the first element (Recent Changes)
         setAllChanges(
           data
             .split("\n## ")
