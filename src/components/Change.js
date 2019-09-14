@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
+import Markdown from "react-markdown";
 
 function Change({ change }) {
-    return (
-        <div>
-            <p>{change}</p>
-        </div>
-    )
+  return (
+    <div className="change">
+      <Markdown source={change} />
+    </div>
+  );
 }
 
 export default Change;

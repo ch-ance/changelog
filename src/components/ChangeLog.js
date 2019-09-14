@@ -2,9 +2,8 @@ import React from "react";
 import Change from "./Change";
 
 function ChangeLog({ changes }) {
-
   return (
-    <div>
+    <div className="changelog">
       {changes.map(change => {
         return <Change change={change} />;
       })}

@@ -10,7 +10,7 @@ function Home() {
     async function fetchChanges() {
       try {
         const { data } = await axios.get(
-          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/d37e0f35f381807fc2a732715448c45192a70c4d/gistfile1.md"
+          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/10e34857705612519619ee6af24d8045950b46c5/gistfile1.md"
         );
         console.log("RESULT: ", data);
         
@@ -34,7 +34,7 @@ function Home() {
   }
 
   return (
-    <div>
+    <div className="home">
       <Header />
       <ChangeLog changes={allChanges} />
     </div>
