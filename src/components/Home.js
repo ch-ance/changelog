@@ -8,15 +8,30 @@ function Home() {
 
   useEffect(() => {
     async function fetchChanges() {
-      const { data } = await axios.get(
-        "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/d37e0f35f381807fc2a732715448c45192a70c4d/gistfile1.md"
-      );
-      console.log("RESULT: ", data);
+      try {
+        const { data } = await axios.get(
+          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/d37e0f35f381807fc2a732715448c45192a70c4d/gistfile1.md"
+        );
+        console.log("RESULT: ", data);
+        
+        // Splits data at each '\n## ' (a new change/update), and then adds the '## ' back
+        setAllChanges(
+          data
+            .split("\n## ")
+            .slice(1)
+            .map(text => "## " + text)
+        );
+      } catch (error) {
+        console.error("Error fetching changes");
+      }
     }
+
     fetchChanges();
   }, []);
 
-  // const changes = ["one update", "another update"];
+  if (!allChanges.length) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <div>
