@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./Header";
 import ChangeLog from "./ChangeLog";
+import ModalChangeLog from "./ModalChangeLog";
 import Modal from "react-modal";
 
 Modal.setAppElement(document.getElementById("root"));
@@ -10,18 +11,20 @@ function Home() {
   // Notifications Modal styles
   const modalStyles = {
     content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
+      top: "10%",
+      left: "auto",
+      right: "25%",
       bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)"
+      width: "300px",
+      height: "350px"
     }
   };
 
   const [modalOpen, setModalOpen] = useState(true);
 
   const [allChanges, setAllChanges] = useState([]);
+
+  const [newChanges, setNewChanges] = useState([]);
 
   useEffect(() => {
     async function fetchChanges() {
@@ -31,13 +34,14 @@ function Home() {
         );
         console.log("RESULT: ", data);
 
+        const formattedData = data
+          .split("\n## ")
+          .slice(1)
+          .map(text => "## " + text);
+
         // Splits data at each new change and adds the correct MD formatting back in. Also removes the first element (Recent Changes)
-        setAllChanges(
-          data
-            .split("\n## ")
-            .slice(1)
-            .map(text => "## " + text)
-        );
+        setAllChanges(formattedData);
+        setNewChanges(formattedData);
       } catch (error) {
         console.error("Error fetching changes");
       }
@@ -63,10 +67,24 @@ function Home() {
         style={modalStyles}
         contentLabel="New features and changes"
       >
-        Modal
+        {newChanges.length ? (
+          <ModalChangeLog changes={newChanges} />
+        ) : (
+          <h4>No new updates</h4>
+        )}
       </Modal>
       <ChangeLog changes={allChanges} />
     </div>
+  );
+}
+
+function ModalContents({ changes }) {
+  return (
+    <ul>
+      {changes.map(change => {
+        return <li>{change}</li>;
+      })}
+    </ul>
   );
 }
 
