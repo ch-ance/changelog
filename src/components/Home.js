@@ -34,7 +34,7 @@ function Home() {
   }
 
   return (
-    <div>
+    <div className="home">
       <Header />
       <ChangeLog changes={allChanges} />
     </div>
