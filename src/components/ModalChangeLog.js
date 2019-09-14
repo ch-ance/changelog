@@ -3,11 +3,11 @@ import ModalChange from "./ModalChange";
 
 function ModalChangeLog({ changes }) {
   return (
-    <ul>
+    <div className="modal-changelog">
       {changes.map(change => {
         return <ModalChange change={change} />;
       })}
-    </ul>
+    </div>
   );
 }
 

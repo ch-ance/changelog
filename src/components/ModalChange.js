@@ -3,9 +3,9 @@ import Markdown from "react-markdown";
 
 function ModalChange({ change }) {
   return (
-    <li>
+    <div className="modal-change">
       <Markdown source={change} />
-    </li>
+    </div>
   );
 }
 
