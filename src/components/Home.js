@@ -20,7 +20,7 @@ function Home() {
     }
   };
 
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [allChanges, setAllChanges] = useState([]);
 
