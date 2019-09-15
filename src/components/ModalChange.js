@@ -2,13 +2,7 @@ import React, { useEffect } from "react";
 import Markdown from "react-markdown";
 import { useInView } from "react-intersection-observer";
 
-function ModalChange({
-  change,
-  clearNotification,
-  setExtraView,
-  extraView,
-  extra
-}) {
+function ModalChange({ change, clearNotification, setExtraView, extraView }) {
   const [ref, inView] = useInView({
     threshold: 1
   });
@@ -28,7 +22,7 @@ function ModalChange({
         setExtraView(!extraView);
       }}
     >
-      <Markdown source={extra ? change.extra : change.content} />
+      <Markdown source={extraView ? change.extra : change.content} />
     </div>
   );
 }
