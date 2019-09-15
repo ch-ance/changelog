@@ -31,12 +31,6 @@ function Home() {
 
   const [seenIds, setSeenIds] = useState([]);
 
-  const stringNumbers = [];
-
-  for (let i = 0; i < 100; i++) {
-    stringNumbers.push(String(i));
-  }
-
   const [cookies, setCookie, removeCookie] = useCookies([]);
 
   useEffect(() => {
