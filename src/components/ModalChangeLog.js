@@ -16,7 +16,7 @@ function ModalChangeLog({ changes, clearNotification }) {
   return (
     <div className={`modal-changelog ${extraView ? "extra-view" : null}`}>
       <div className="modal-header">
-        <h4>Latest Changes</h4>
+        <h4>Latest Changes {extraView ? "Extra" : "Main"}</h4>
       </div>
       {changes.map(change => {
         return (

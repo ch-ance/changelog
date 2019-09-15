@@ -37,7 +37,7 @@ function Home() {
     async function fetchChanges() {
       try {
         const { data } = await axios.get(
-          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/2e7a81d81cd26a2ebe2d4fa370e358718ceebf5b/gistfile1.md"
+          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/9c86d93e195fc002c5c465b5fc0a680e769bbaca/gistfile1.md"
         );
         const dataArray = data.split("\n## ").slice(1);
 
@@ -45,7 +45,10 @@ function Home() {
           .reverse()
           .map((text, index) => {
             const content = "## " + text.slice(0, text.indexOf("#### "));
-            const extra = text.slice(text.indexOf("####"))
+            const extra =
+              "## " +
+              text.slice(0, text.indexOf("#")) +
+              text.slice(text.indexOf("####"));
             return {
               content,
               id: index,

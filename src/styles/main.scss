@@ -1,11 +1,19 @@
 .home {
   box-sizing: border-box;
 
-  .header {
-    // width: 100vw;
+  .header-container {
+    width: 100vw;
+    background: white;
     position: fixed;
     top: 0;
-    left: 25%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .header {
+    // width: 100vw;
+    // position: fixed;
+    // top: 0;
     height: 6rem;
     display: flex;
     width: 50%;
@@ -23,7 +31,7 @@
         top: 0.8rem;
         width: 3rem;
         height: 3rem;
-        right: 0;
+        right: 25%;
         border-radius: 50%;
         font-size: 3rem;
         text-align: center;
@@ -40,7 +48,6 @@
     max-width: 700px;
     margin: 85px auto 0;
     .change {
-      width: 100%;
       border: 1px solid lightslategray;
       margin: 1rem 0;
       padding: 0 1rem;
@@ -82,6 +89,7 @@
     background: white;
   }
   .modal-change {
+    animation: slideIn 0.5s backwards;
     border: 1px solid darkslategray;
     padding: 1rem;
     font-size: 1.4rem;
@@ -89,6 +97,7 @@
     margin-bottom: 1.6rem;
     height: 180px;
     cursor: pointer;
+    overflow: hidden;
 
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -108,12 +117,22 @@
 }
 
 .extra-view {
+  overflow: hidden;
   .modal-change {
     animation: slide 0.5s backwards;
   }
 }
 
 @keyframes slide {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideIn {
   0% {
     transform: translateX(-100%);
   }
