@@ -54,6 +54,8 @@ function Home() {
         // Splits data at each new change and adds the correct MD formatting back in. Also removes the first element (Recent Changes)
         setAllChanges(formattedData);
 
+
+        // Get ids of each cookie,
         const ids = Object.keys(cookies).map(id => {
           if (!isNaN(parseInt(id))) {
             return parseInt(id);
