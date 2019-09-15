@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 function ModalChange({ change }) {
   return (
     <div className="modal-change">
-      <Markdown source={change} />
+      <Markdown source={change.content} />
     </div>
   );
 }

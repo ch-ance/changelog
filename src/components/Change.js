@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 function Change({ change }) {
   return (
     <div className="change">
-      <Markdown source={change} />
+      <Markdown source={change.content} />
     </div>
   );
 }

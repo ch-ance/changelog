@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { withCookies } from "react-cookie";
+import uuid from "uuid/v4";
 import Header from "./Header";
 import ChangeLog from "./ChangeLog";
 import ModalChangeLog from "./ModalChangeLog";
@@ -38,7 +39,12 @@ function Home({ cookies }) {
         const formattedData = data
           .split("\n## ")
           .slice(1)
-          .map(text => "## " + text);
+          .map(text => {
+            return {
+              content: "## " + text,
+              id: uuid()
+            };
+          });
 
         // Splits data at each new change and adds the correct MD formatting back in. Also removes the first element (Recent Changes)
         setAllChanges(formattedData);
@@ -52,7 +58,7 @@ function Home({ cookies }) {
   }, []);
 
   function openModal() {
-    setModalOpen(true)
+    setModalOpen(true);
   }
 
   function closeModal() {
