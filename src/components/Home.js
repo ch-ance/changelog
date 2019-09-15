@@ -39,12 +39,14 @@ function Home({ cookies }) {
         const formattedData = data
           .split("\n## ")
           .slice(1)
-          .map(text => {
+          .reverse()
+          .map((text, index) => {
             return {
               content: "## " + text,
-              id: uuid()
+              id: index
             };
-          });
+          })
+          .reverse();
 
         // Splits data at each new change and adds the correct MD formatting back in. Also removes the first element (Recent Changes)
         setAllChanges(formattedData);
@@ -65,6 +67,10 @@ function Home({ cookies }) {
     setModalOpen(false);
   }
 
+  function clearNotification(id) {
+    console.log(id);
+  }
+
   if (!allChanges.length) {
     return <h1>Loading...</h1>;
   }
@@ -79,7 +85,10 @@ function Home({ cookies }) {
         contentLabel="New features and changes"
       >
         {newChanges.length ? (
-          <ModalChangeLog changes={newChanges} />
+          <ModalChangeLog
+            clearNotification={clearNotification}
+            changes={newChanges}
+          />
         ) : (
           <h4>No new updates</h4>
         )}
