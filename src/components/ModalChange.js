@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Markdown from "react-markdown";
+import { useInView } from "react-intersection-observer";
 
-function ModalChange({ change }) {
+function ModalChange({ change, clearNotification }) {
+  const [ref, inView, entry] = useInView({
+    threshold: 1
+  });
+
+
+  useEffect(() => {
+    if (inView) {
+      clearNotification(change.id);
+    }
+  }, [inView]);
+
   return (
-    <div className="modal-change">
-      <Markdown source={change} />
+    <div className="modal-change" ref={ref}>
+      <Markdown source={change.content} />
     </div>
   );
 }

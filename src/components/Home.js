@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import axios from "axios";
+import { withCookies, useCookies } from "react-cookie";
 import Header from "./Header";
 import ChangeLog from "./ChangeLog";
 import ModalChangeLog from "./ModalChangeLog";
@@ -8,7 +9,7 @@ import Modal from "react-modal";
 Modal.setAppElement(document.getElementById("root"));
 
 function Home() {
-  // Notifications Modal styles
+  // Notifications-Modal styles
   const modalStyles = {
     content: {
       top: "10%",
@@ -26,32 +27,85 @@ function Home() {
 
   const [newChanges, setNewChanges] = useState([]);
 
+  const [notifNumber, setNotifNumber] = useState(0);
+
+  const [seenIds, setSeenIds] = useState([]);
+
+  const stringNumbers = [];
+
+  for (let i = 0; i < 100; i++) {
+    stringNumbers.push(String(i));
+  }
+
+  const [cookies, setCookie, removeCookie] = useCookies([]);
+
   useEffect(() => {
     async function fetchChanges() {
       try {
         const { data } = await axios.get(
           "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/10e34857705612519619ee6af24d8045950b46c5/gistfile1.md"
         );
-        console.log("RESULT: ", data);
-
         const formattedData = data
           .split("\n## ")
           .slice(1)
-          .map(text => "## " + text);
+          .reverse()
+          .map((text, index) => {
+            return {
+              content: "## " + text,
+              id: index
+            };
+          })
+          .reverse();
 
         // Splits data at each new change and adds the correct MD formatting back in. Also removes the first element (Recent Changes)
         setAllChanges(formattedData);
-        setNewChanges(formattedData);
+
+        const ids = Object.keys(cookies).map(id => {
+          if (!isNaN(parseInt(id))) {
+            return parseInt(id);
+          } else {
+            return null;
+          }
+        });
+
+        const notInCookies = formattedData.filter(change => {
+          return !ids.includes(change.id);
+        });
+
+        setNewChanges(notInCookies);
+        setNotifNumber(notInCookies.length);
       } catch (error) {
         console.error("Error fetching changes");
       }
     }
 
     fetchChanges();
-  }, []);
+  }, [cookies, setNewChanges]);
+
+  useLayoutEffect(() => {
+    setNotifNumber(newChanges.length);
+  }, [newChanges]);
+
+  function openModal() {
+    setModalOpen(true);
+  }
 
   function closeModal() {
     setModalOpen(false);
+    setNewChanges(
+      newChanges.filter(change => {
+        return !seenIds.includes(change.id);
+      })
+    );
+  }
+
+  function clearNotification(id) {
+    console.log(id);
+    if (notifNumber > 0 && !seenIds.includes(id)) {
+      setNotifNumber(notifNumber - 1);
+    }
+    setSeenIds([...seenIds, id]);
+    setCookie(`${id}`);
   }
 
   if (!allChanges.length) {
@@ -60,7 +114,7 @@ function Home() {
 
   return (
     <div className="home">
-      <Header setModalOpen={setModalOpen} />
+      <Header openModal={openModal} notifNumber={notifNumber} />
       <Modal
         isOpen={modalOpen}
         onRequestClose={closeModal}
@@ -68,9 +122,29 @@ function Home() {
         contentLabel="New features and changes"
       >
         {newChanges.length ? (
-          <ModalChangeLog changes={newChanges} />
+          <ModalChangeLog
+            clearNotification={clearNotification}
+            changes={newChanges}
+          />
         ) : (
-          <h4>No new updates</h4>
+          <>
+            <h4>No new updates</h4>
+            <button
+              onClick={e => {
+                e.preventDefault();
+
+                allChanges.forEach(change => {
+                  removeCookie(`${change.id}`);
+                });
+                setModalOpen(false);
+                setSeenIds([]);
+                setNewChanges(allChanges);
+              }}
+            >
+              This app uses cookies to track the updates you've already seen.
+              Click here to delete your cookies and get your notifcations back
+            </button>
+          </>
         )}
       </Modal>
       <ChangeLog changes={allChanges} />
@@ -78,14 +152,4 @@ function Home() {
   );
 }
 
-function ModalContents({ changes }) {
-  return (
-    <ul>
-      {changes.map(change => {
-        return <li>{change}</li>;
-      })}
-    </ul>
-  );
-}
-
-export default Home;
+export default withCookies(Home);
