@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { withCookies } from "react-cookie";
-import uuid from "uuid/v4";
 import Header from "./Header";
 import ChangeLog from "./ChangeLog";
 import ModalChangeLog from "./ModalChangeLog";
@@ -10,7 +9,7 @@ import Modal from "react-modal";
 Modal.setAppElement(document.getElementById("root"));
 
 function Home({ cookies }) {
-  // Notifications Modal styles
+  // Notifications-Modal styles
   const modalStyles = {
     content: {
       top: "10%",
@@ -70,6 +69,9 @@ function Home({ cookies }) {
 
   function closeModal() {
     setModalOpen(false);
+    setNewChanges(newChanges.filter(change => {
+      return !seenIds.includes(change.id)
+    }))
   }
 
   function clearNotification(id) {
