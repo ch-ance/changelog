@@ -37,23 +37,40 @@ function Home() {
     async function fetchChanges() {
       try {
         const { data } = await axios.get(
-          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/10e34857705612519619ee6af24d8045950b46c5/gistfile1.md"
+          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/2e7a81d81cd26a2ebe2d4fa370e358718ceebf5b/gistfile1.md"
         );
-        const formattedData = data
-          .split("\n## ")
-          .slice(1)
+        // const substring = string.slice(
+        //   string.indexOf("\n##"),
+        //   string.indexOf("\n#### ")
+        // );
+        // const additionalInfo = string.replace(substring, "");
+        const dataArray = data.split("\n## ").slice(1);
+
+        const formattedData = dataArray
           .reverse()
           .map((text, index) => {
+            const content = "## " + text.slice(0, text.indexOf("#### "));
+            const extra = text.slice(text.indexOf("####"))
             return {
-              content: "## " + text,
-              id: index
+              content,
+              id: index,
+              extra
             };
           })
           .reverse();
+        // .reverse()
+        // .map((text, index) => {
+        // const additionalInfo = text.split("\n#### ");
+        // return {
+        // content: "## " + text,
+        // id: index,
+        // additionalInfo
+        // };
+        // })
+        // .reverse();
 
         // Splits data at each new change and adds the correct MD formatting back in. Also removes the first element (Recent Changes)
         setAllChanges(formattedData);
-
 
         // Get ids of each cookie,
         const ids = Object.keys(cookies).map(id => {
