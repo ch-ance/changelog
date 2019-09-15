@@ -28,6 +28,10 @@ function Home({ cookies }) {
 
   const [newChanges, setNewChanges] = useState([]);
 
+  const [notifNumber, setNotifNumber] = useState(newChanges.length);
+
+  const [seenIds, setSeenIds] = useState([]);
+
   useEffect(() => {
     async function fetchChanges() {
       try {
@@ -51,6 +55,7 @@ function Home({ cookies }) {
         // Splits data at each new change and adds the correct MD formatting back in. Also removes the first element (Recent Changes)
         setAllChanges(formattedData);
         setNewChanges(formattedData);
+        setNotifNumber(formattedData.length);
       } catch (error) {
         console.error("Error fetching changes");
       }
@@ -69,6 +74,10 @@ function Home({ cookies }) {
 
   function clearNotification(id) {
     console.log(id);
+    if (notifNumber > 0 && !seenIds.includes(id)) {
+      setNotifNumber(notifNumber - 1);
+      setSeenIds([...seenIds, id]);
+    }
   }
 
   if (!allChanges.length) {
@@ -77,7 +86,7 @@ function Home({ cookies }) {
 
   return (
     <div className="home">
-      <Header openModal={openModal} />
+      <Header openModal={openModal} notifNumber={notifNumber} />
       <Modal
         isOpen={modalOpen}
         onRequestClose={closeModal}
@@ -95,16 +104,6 @@ function Home({ cookies }) {
       </Modal>
       <ChangeLog changes={allChanges} />
     </div>
-  );
-}
-
-function ModalContents({ changes }) {
-  return (
-    <ul>
-      {changes.map(change => {
-        return <li>{change}</li>;
-      })}
-    </ul>
   );
 }
 
