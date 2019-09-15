@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 
 function ModalChange({ change, clearNotification }) {
   const [ref, inView, entry] = useInView({
-    threshold: .5
+    threshold: 1
   });
 
 
