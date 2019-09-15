@@ -39,11 +39,6 @@ function Home() {
         const { data } = await axios.get(
           "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/2e7a81d81cd26a2ebe2d4fa370e358718ceebf5b/gistfile1.md"
         );
-        // const substring = string.slice(
-        //   string.indexOf("\n##"),
-        //   string.indexOf("\n#### ")
-        // );
-        // const additionalInfo = string.replace(substring, "");
         const dataArray = data.split("\n## ").slice(1);
 
         const formattedData = dataArray
@@ -58,16 +53,6 @@ function Home() {
             };
           })
           .reverse();
-        // .reverse()
-        // .map((text, index) => {
-        // const additionalInfo = text.split("\n#### ");
-        // return {
-        // content: "## " + text,
-        // id: index,
-        // additionalInfo
-        // };
-        // })
-        // .reverse();
 
         // Splits data at each new change and adds the correct MD formatting back in. Also removes the first element (Recent Changes)
         setAllChanges(formattedData);
