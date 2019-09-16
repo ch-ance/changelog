@@ -4,19 +4,10 @@ import ModalChange from "./ModalChange";
 function ModalChangeLog({ changes, clearNotification }) {
   const [extraView, setExtraView] = useState(false);
 
-  // useEffect(() => {
-  //   if (extraView) {
-  //     console.log("moving to extra");
-
-  //   } else {
-  //     console.log("moving to regular");
-  //   }
-  // }, [extraView]);
-
   return (
     <div className={`modal-changelog ${extraView ? "extra-view" : null}`}>
       <div className="modal-header">
-        <h4>Latest Changes {extraView ? "Extra" : "Main"}</h4>
+        <h4>{extraView ? "Additional Information" : "Latest Changes"}</h4>
       </div>
       {changes.map(change => {
         return (
