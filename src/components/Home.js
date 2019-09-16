@@ -39,7 +39,7 @@ function Home() {
     async function fetchChanges() {
       try {
         const { data } = await axios.get(
-          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/7476843b873928af9ad7fec491fb5b6f3998065c/gistfile1.md"
+          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/5ca42c065c4eb4a9e8190dc81e2cde587ddc4b80/gistfile1.md"
         );
         const dataArray = data.split("\n## ").slice(1);
 
@@ -48,12 +48,11 @@ function Home() {
           .map((text, index) => {
             const title = text.slice(0, text.indexOf("\n"));
             text = text.replace(title, "");
-            const date = text.match(
-              /\d\d\/\d\d\/\d\d/
-            );
-            const content = text
-              .slice(text.indexOf("-"), text.indexOf("####"))
-              .split("- ");
+            const date = text.match(/\d\d\/\d\d\/\d\d\d\d/)[0];
+            text = text.replace(date, "");
+            const label = text.slice(text.indexOf("["), text.indexOf("]") + 1);
+            text = text.replace(label, "");
+            const content = text.slice(4, text.indexOf("####")).split("\n");
             const extra = text
               .slice(text.indexOf("####"))
               .replace("additional info", "");
