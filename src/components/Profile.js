@@ -13,6 +13,7 @@ function Profile({ openModal, notifNumber }) {
     >
       <FontAwesomeIcon icon={faUserCircle} />
       <NotificationIcon number={notifNumber} />
+      <span>Recent Changes</span>
     </div>
   );
 }

@@ -33,6 +33,11 @@
       font-size: 4.8rem;
       display: flex;
       align-items: center;
+      display: flex;
+      flex-direction: column;
+      span {
+        font-size: 1.4rem;
+      }
       .notify {
         position: absolute;
         background-color: green;
