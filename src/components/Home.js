@@ -21,6 +21,8 @@ function Home() {
     }
   };
 
+  const [hasMounted, setHasMounted] = useState(false);
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const [allChanges, setAllChanges] = useState([]);
@@ -52,7 +54,8 @@ function Home() {
             return {
               content,
               id: index,
-              extra
+              extra,
+              read: false
             };
           })
           .reverse();
@@ -69,9 +72,16 @@ function Home() {
           }
         });
 
-        const notInCookies = formattedData.filter(change => {
-          return !ids.includes(change.id);
-        });
+        const notInCookies = formattedData
+          .filter(change => {
+            return !ids.includes(change.id);
+          })
+          .map(change => {
+            return {
+              ...change,
+              read: false
+            };
+          });
 
         setNewChanges(notInCookies);
         setNotifNumber(notInCookies.length);
@@ -84,7 +94,10 @@ function Home() {
   }, [cookies, setNewChanges]);
 
   useLayoutEffect(() => {
-    setNotifNumber(newChanges.length);
+    if (!hasMounted) {
+      setNotifNumber(newChanges.length);
+      setHasMounted(true);
+    }
   }, [newChanges]);
 
   function openModal() {
@@ -107,6 +120,17 @@ function Home() {
     }
     setSeenIds([...seenIds, id]);
     setCookie(`${id}`);
+
+    const updatedChanges = newChanges.map(change => {
+      if (change.id === id) {
+        return {
+          ...change,
+          read: true
+        };
+      } else return change;
+    });
+
+    setNewChanges(updatedChanges);
   }
 
   if (!allChanges.length) {
@@ -139,6 +163,7 @@ function Home() {
                 });
                 setModalOpen(false);
                 setSeenIds([]);
+                setHasMounted(false);
                 setNewChanges(allChanges);
               }}
             >

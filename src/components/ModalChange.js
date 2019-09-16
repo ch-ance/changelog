@@ -15,7 +15,7 @@ function ModalChange({ change, clearNotification, setExtraView, extraView }) {
 
   return (
     <div
-      className="modal-change"
+      className={`modal-change ${change.read ? "read" : "unread"}`}
       ref={ref}
       onClick={e => {
         e.preventDefault();
