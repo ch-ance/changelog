@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useInView } from "react-intersection-observer";
+import React from "react";
 
 function AdditionalInfoModalScreen({ change }) {
   const label = change.label.replace("[", "").replace("]", "");
@@ -12,7 +11,7 @@ function AdditionalInfoModalScreen({ change }) {
       ))}
       {change.extra.replace("#### ", "")}
       {change.link !== "?" && (
-        <a href={change.link} target="_blank">
+        <a rel="noopener noreferrer" href={change.link} target="_blank">
           {change.link}
         </a>
       )}

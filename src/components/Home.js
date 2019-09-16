@@ -33,7 +33,7 @@ function Home() {
 
   const [seenIds, setSeenIds] = useState([]);
 
-  const [cookies, setCookie, removeCookie] = useCookies([]);
+  const [cookies, setCookie] = useCookies([]);
 
   useEffect(() => {
     async function fetchChanges() {

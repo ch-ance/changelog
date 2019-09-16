@@ -1,6 +1,4 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 function Profile({ openModal, notifNumber }) {
   return (
@@ -11,7 +9,6 @@ function Profile({ openModal, notifNumber }) {
         openModal();
       }}
     >
-      {/* <FontAwesomeIcon icon={faUserCircle} /> */}
       <NotificationIcon number={notifNumber} />
       <span>Recent Changes</span>
     </div>
