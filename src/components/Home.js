@@ -93,8 +93,7 @@ function Home() {
               read: false
             };
           });
-
-        setNewChanges(notInCookies);
+        setNewChanges(allChanges);
         setNotifNumber(notInCookies.length);
       } catch (error) {
         console.error("Error fetching changes");
@@ -117,11 +116,6 @@ function Home() {
 
   function closeModal() {
     setModalOpen(false);
-    setNewChanges(
-      newChanges.filter(change => {
-        return !seenIds.includes(change.id);
-      })
-    );
   }
 
   function clearNotification(id) {
@@ -131,17 +125,6 @@ function Home() {
     }
     setSeenIds([...seenIds, id]);
     setCookie(`${id}`);
-
-    const updatedChanges = newChanges.map(change => {
-      if (change.id === id) {
-        return {
-          ...change,
-          read: true
-        };
-      } else return change;
-    });
-
-    setNewChanges(updatedChanges);
   }
 
   if (!allChanges.length) {
@@ -157,32 +140,10 @@ function Home() {
         style={modalStyles}
         contentLabel="New features and changes"
       >
-        {newChanges.length ? (
-          <ModalChangeLog
-            clearNotification={clearNotification}
-            changes={newChanges}
-          />
-        ) : (
-          <>
-            <h4>No new updates</h4>
-            <button
-              onClick={e => {
-                e.preventDefault();
-
-                allChanges.forEach(change => {
-                  removeCookie(`${change.id}`);
-                });
-                setModalOpen(false);
-                setSeenIds([]);
-                setHasMounted(false);
-                setNewChanges(allChanges);
-              }}
-            >
-              This app uses cookies to track the updates you've already seen.
-              Click here to delete your cookies and get your notifcations back
-            </button>
-          </>
-        )}
+        <ModalChangeLog
+          clearNotification={clearNotification}
+          changes={allChanges}
+        />
       </Modal>
       <ChangeLog changes={allChanges} />
     </div>
