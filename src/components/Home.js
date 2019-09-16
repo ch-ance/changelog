@@ -39,16 +39,21 @@ function Home() {
     async function fetchChanges() {
       try {
         const { data } = await axios.get(
-          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/c1644da0ad5f1f9c048d724717be2af049c72fb5/gistfile1.md"
+          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/7476843b873928af9ad7fec491fb5b6f3998065c/gistfile1.md"
         );
         const dataArray = data.split("\n## ").slice(1);
 
         const formattedData = dataArray
           .reverse()
           .map((text, index) => {
-            const title = "## " + text.slice(0, text.indexOf("\n"));
-            const date = text.slice(text.indexOf("\n## "), text.indexOf("\n"));
-            const content = text.slice(text.indexOf("-"), text.indexOf("####"));
+            const title = text.slice(0, text.indexOf("\n"));
+            text = text.replace(title, "");
+            const date = text.match(
+              /\d\d\/\d\d\/\d\d/
+            );
+            const content = text
+              .slice(text.indexOf("-"), text.indexOf("####"))
+              .split("- ");
             const extra = text
               .slice(text.indexOf("####"))
               .replace("additional info", "");
