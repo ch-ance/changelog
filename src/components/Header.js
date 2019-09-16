@@ -3,10 +3,12 @@ import Profile from "./Profile";
 
 function Header({ openModal, notifNumber }) {
   return (
-    <header className="header">
-      <h1>Paperspace changelog</h1>
-      <Profile openModal={openModal} notifNumber={notifNumber} />
-    </header>
+    <div className="header-container">
+      <header className="header">
+        <h1>Paperspace changelog</h1>
+        <Profile openModal={openModal} notifNumber={notifNumber} />
+      </header>
+    </div>
   );
 }
 

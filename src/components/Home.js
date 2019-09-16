@@ -21,6 +21,8 @@ function Home() {
     }
   };
 
+  const [hasMounted, setHasMounted] = useState(false);
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const [allChanges, setAllChanges] = useState([]);
@@ -37,23 +39,32 @@ function Home() {
     async function fetchChanges() {
       try {
         const { data } = await axios.get(
-          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/10e34857705612519619ee6af24d8045950b46c5/gistfile1.md"
+          "https://gist.githubusercontent.com/cembreyfarquhar/76bf4cb38fe04cdd4da3b3ca34157ff1/raw/c1644da0ad5f1f9c048d724717be2af049c72fb5/gistfile1.md"
         );
-        const formattedData = data
-          .split("\n## ")
-          .slice(1)
+        const dataArray = data.split("\n## ").slice(1);
+
+        const formattedData = dataArray
           .reverse()
           .map((text, index) => {
+            const title = "## " + text.slice(0, text.indexOf("\n"));
+            const date = text.slice(text.indexOf("\n## "), text.indexOf("\n"));
+            const content = text.slice(text.indexOf("-"), text.indexOf("####"));
+            const extra = text
+              .slice(text.indexOf("####"))
+              .replace("additional info", "");
             return {
-              content: "## " + text,
-              id: index
+              title,
+              date,
+              content,
+              id: index,
+              extra,
+              read: false
             };
           })
           .reverse();
 
         // Splits data at each new change and adds the correct MD formatting back in. Also removes the first element (Recent Changes)
         setAllChanges(formattedData);
-
 
         // Get ids of each cookie,
         const ids = Object.keys(cookies).map(id => {
@@ -64,9 +75,16 @@ function Home() {
           }
         });
 
-        const notInCookies = formattedData.filter(change => {
-          return !ids.includes(change.id);
-        });
+        const notInCookies = formattedData
+          .filter(change => {
+            return !ids.includes(change.id);
+          })
+          .map(change => {
+            return {
+              ...change,
+              read: false
+            };
+          });
 
         setNewChanges(notInCookies);
         setNotifNumber(notInCookies.length);
@@ -79,7 +97,10 @@ function Home() {
   }, [cookies, setNewChanges]);
 
   useLayoutEffect(() => {
-    setNotifNumber(newChanges.length);
+    if (!hasMounted) {
+      setNotifNumber(newChanges.length);
+      setHasMounted(true);
+    }
   }, [newChanges]);
 
   function openModal() {
@@ -102,6 +123,17 @@ function Home() {
     }
     setSeenIds([...seenIds, id]);
     setCookie(`${id}`);
+
+    const updatedChanges = newChanges.map(change => {
+      if (change.id === id) {
+        return {
+          ...change,
+          read: true
+        };
+      } else return change;
+    });
+
+    setNewChanges(updatedChanges);
   }
 
   if (!allChanges.length) {
@@ -134,6 +166,7 @@ function Home() {
                 });
                 setModalOpen(false);
                 setSeenIds([]);
+                setHasMounted(false);
                 setNewChanges(allChanges);
               }}
             >
