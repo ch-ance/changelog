@@ -11,9 +11,11 @@ function AdditionalInfoModalScreen({ change }) {
         <p>{piece}</p>
       ))}
       {change.extra.replace("#### ", "")}
-      <a href={change.link} target="_blank">
-        {change.link}
-      </a>
+      {change.link !== "?" && (
+        <a href={change.link} target="_blank">
+          {change.link}
+        </a>
+      )}
     </div>
   );
 }
