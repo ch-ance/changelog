@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import Markdown from "react-markdown";
 import { useInView } from "react-intersection-observer";
 
-function ModalChange({ change, clearNotification, setExtraView, extraView }) {
+function ModalChange({ change, clearNotification, setExtraView, extraView, setSelectedChange }) {
+  const label = change.label.replace("[", "").replace("]", "");
+  
   const [ref, inView] = useInView({
     threshold: 1
   });
@@ -15,14 +16,19 @@ function ModalChange({ change, clearNotification, setExtraView, extraView }) {
 
   return (
     <div
-      className={`modal-change ${change.read ? "read" : "unread"}`}
+      className="modal-change"
       ref={ref}
       onClick={e => {
         e.preventDefault();
+        setSelectedChange(change)
         setExtraView(!extraView);
       }}
     >
-      <Markdown source={extraView ? change.extra : change.content} />
+      <h2>{change.title}</h2>
+      <div className={`label ${label}`}>{label}</div>
+      {change.content.map(piece => (
+        <p>{piece}</p>
+      ))}
     </div>
   );
 }
