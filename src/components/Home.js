@@ -53,6 +53,8 @@ function Home() {
             const label = text.slice(text.indexOf("["), text.indexOf("]") + 1);
             text = text.replace(label, "");
             const content = text.slice(4, text.indexOf("####")).split("\n");
+            const link = text.slice(text.indexOf("https://"));
+            text = text.replace(link, "");
             const extra = text
               .slice(text.indexOf("####"))
               .replace("additional info", "");
@@ -61,6 +63,7 @@ function Home() {
               date,
               label,
               content,
+              link,
               id: index,
               extra,
               read: false
