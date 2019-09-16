@@ -9,11 +9,15 @@ function Change({ change }) {
   // const today = new Date();
   const diff = moment().diff(date, "days");
   const difference = getDistanceFromDate(diff);
+  const label = change.label.replace("[", "").replace("]", "")
   return (
     <div className="change">
-      <span>{difference}</span>
+      <div className="diff">{difference}</div>
       <div className="inner-content">
         <h2>{change.title}</h2>
+        <div className={`label ${label}`}>
+          {label}
+        </div>
         {change.content.map(piece => (
           <p>{piece}</p>
         ))}

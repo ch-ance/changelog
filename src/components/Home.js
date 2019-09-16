@@ -59,6 +59,7 @@ function Home() {
             return {
               title,
               date,
+              label,
               content,
               id: index,
               extra,
